@@ -1,16 +1,17 @@
 <?php
 
+use App\Controllers\SiteController;
 use CodeIgniter\Router\RouteCollection;
 
 /** @var RouteCollection $routes */
-$routes->get('/', 'Home::index');
+$routes->get('/', 'SiteController::index');
 
-$routes->get('about-us', 'Home::about');
+$routes->get('about-us', 'SiteController::about');
 
-$routes->get('careers', 'Home::careers');
-$routes->get('quote', 'Home::quote');
-$routes->post('contact', 'Home::sendContact');
+$routes->get('careers', 'SiteController::careers');
+$routes->get('quote', 'SiteController::quote');
+$routes->post('contact', 'SiteController::sendContact');
 
-$routes->post('quote/calculate', 'Home::calculate');
-$routes->post('quote/validate-tourists', 'Home::validateTourists');
-$routes->post('quote/applications', 'Home::saveApplication');
+$routes->post('quote/calculate', 'SiteController::calculate');
+$routes->post('quote/validate-tourists', 'SiteController::validateTourists');
+$routes->post('quote/applications', 'SiteController::saveApplication');

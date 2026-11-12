@@ -11,6 +11,7 @@
 
 namespace Config;
 
+use App\Controllers\SiteController;
 use CodeIgniter\Config\Routing as BaseRouting;
 
 /**
@@ -48,7 +49,7 @@ class Routing extends BaseRouting
      *
      * Default: 'Home'
      */
-    public string $defaultController = 'Home';
+    public string $defaultController = 'SiteController';
 
     /**
      * For Defined Routes and Auto Routing.

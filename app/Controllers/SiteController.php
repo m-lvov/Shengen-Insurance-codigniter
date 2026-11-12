@@ -7,7 +7,7 @@ use App\Libraries\QuotePreparer;
 use App\Libraries\ApplicationWriter;
 use App\Libraries\ApplicationRequestKey;
 
-class Home extends BaseController
+class SiteController extends BaseController
 {
     public function index(): string
     {
