@@ -10,7 +10,7 @@
     <link rel="icon" type="image/svg+xml" sizes="any" href="/img/quote/favicon.svg">
     <link rel="stylesheet" href="/css/modern-normalize.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
-    <link rel="stylesheet" href="/css/style.css?v=20261112-layout-2">
+    <link rel="stylesheet" href="/css/style.css?v=20261112-layout-3">
 </head>
 
 <body class="<?= htmlspecialchars($bodyClass ?? '', ENT_QUOTES, 'UTF-8') ?>">

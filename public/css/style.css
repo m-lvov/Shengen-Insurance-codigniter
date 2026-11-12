@@ -3185,8 +3185,45 @@ body:has(.insurance-popup:not([hidden])) {
     object-fit: cover;
 }
 
-.entry-system__notice {
-    min-height: 186px;
+@supports (grid-template-rows: subgrid) {
+    .entry-systems__list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 830px));
+        grid-template-rows: repeat(6, auto) minmax(0, 1fr) auto;
+        gap: 0 20px;
+    }
+
+    .entry-system {
+        display: grid;
+        grid-row: 1 / span 8;
+        grid-template-rows: subgrid;
+    }
+
+    .entry-system__media {
+        display: grid;
+        grid-row: span 2;
+        grid-template-rows: subgrid;
+        margin-top: 60px;
+        padding: 0 20px 20px;
+    }
+
+    .entry-system__media::before {
+        content: "";
+        grid-area: 1 / 1 / 3;
+        min-height: 360px;
+    }
+
+    .entry-system__img {
+        position: absolute;
+        inset: 0;
+        height: 100%;
+    }
+
+    .entry-system__notice {
+        position: relative;
+        inset: auto;
+        grid-row: 2;
+    }
 }
 
 /* Visa check */
@@ -7434,11 +7471,6 @@ body:has(.insurance-popup:not([hidden])) {
 
 /* Responsive */
 @media (max-width: 1725px) {
-    .entry-system {
-        flex: 1 1 0;
-        min-width: 0;
-    }
-
     .coverage__content,
     .coverage__table-box,
     .exclusions__content,
