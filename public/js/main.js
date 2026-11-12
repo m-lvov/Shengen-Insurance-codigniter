@@ -3363,7 +3363,9 @@ if (quotePage) {
 
     if (tripData) {
         let countryText =
-            tripData.countries.length === 1 ? tripData.countries[0] : 'Several directions';
+            tripData.countries.length === 1
+                ? countryLabel(tripData.countries[0])
+                : siteText('Several directions');
 
         document
             .querySelectorAll(
@@ -3557,10 +3559,10 @@ if (quotePage) {
 
     cruiseBasicRows[0].name = siteText('Medical assistance');
     cruiseBasicRows[0].detail =
-        "Schengen medical travel insurance for cruise covers emergency medical assistance, treatment due to injury, medication provision, calling a doctor, doctor's consultation (examination), emergency dental care, exacerbation of chronic diseases, acute respiratory and viral infections, outpatient treatment and inpatient treatment.";
+        siteText("Schengen medical travel insurance for cruise covers emergency medical assistance, treatment due to injury, medication provision, calling a doctor, doctor's consultation (examination), emergency dental care, exacerbation of chronic diseases, acute respiratory and viral infections, outpatient treatment and inpatient treatment.");
 
     cruiseBasicRows[1].detail =
-        'Schengen insurance for cruise includes medical transportation services, emergency ambulance call, independent taxi call to the hospital in the event of an insured event, as well as medical air transportation.';
+        siteText('Schengen insurance for cruise includes medical transportation services, emergency ambulance call, independent taxi call to the hospital in the event of an insured event, as well as medical air transportation.');
 
     let cruiseCoverageRows = [
         {
@@ -3650,7 +3652,9 @@ if (quotePage) {
                 return { ...item };
             });
 
-            rows[0].name = selectedCoverage === 35000 ? 'Medical assistance' : siteText("Medical coverage");
+            rows[0].name = selectedCoverage === 35000
+                ? siteText('Medical assistance')
+                : siteText('Medical coverage');
         }
         if (selectedTrip === 'cruise') {
             rows = selectedCoverage === 35000 ? cruiseBasicRows : cruiseCoverageRows;

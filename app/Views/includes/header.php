@@ -10,7 +10,7 @@
     <link rel="icon" type="image/svg+xml" sizes="any" href="/img/quote/favicon.svg">
     <link rel="stylesheet" href="/css/modern-normalize.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=20261112-layout-2">
 </head>
 
 <body class="<?= htmlspecialchars($bodyClass ?? '', ENT_QUOTES, 'UTF-8') ?>">
@@ -62,31 +62,31 @@
                     <nav class="burger-menu__navigation">
                         <div class="burger-menu__tabs">
                             <button class="burger-menu__tab" type="button" data-menu-tab="destinations">
-                                <?= esc(lang('SiteCopy.destinations')) ?>
+                                <span class="burger-menu__tab-label"><?= esc(lang('SiteCopy.destinations')) ?></span>
                                 <img src="/img/mega-menu/arrow.svg" alt="">
                             </button>
                             <button class="burger-menu__tab" type="button" data-menu-tab="insurance">
-                                <?= esc(lang('SiteCopy.schengen_visa_insurance')) ?>
+                                <span class="burger-menu__tab-label"><?= esc(lang('SiteCopy.schengen_visa_insurance')) ?></span>
                                 <img src="/img/mega-menu/arrow.svg" alt="">
                             </button>
                             <button class="burger-menu__tab" type="button" data-menu-tab="entry-rules">
-                                <?= esc(lang('SiteCopy.rules_of_entry')) ?>
+                                <span class="burger-menu__tab-label"><?= esc(lang('SiteCopy.rules_of_entry')) ?></span>
                                 <img src="/img/mega-menu/arrow.svg" alt="">
                             </button>
                             <button class="burger-menu__tab" type="button" data-menu-tab="visa-types">
-                                <?= esc(lang('SiteCopy.types_schengen_visas')) ?>
+                                <span class="burger-menu__tab-label"><?= esc(lang('SiteCopy.types_schengen_visas')) ?></span>
                                 <img src="/img/mega-menu/arrow.svg" alt="">
                             </button>
                             <button class="burger-menu__tab" type="button" data-menu-tab="visa-refusal">
-                                <?= esc(lang('SiteCopy.schengen_visas_refusal')) ?>
+                                <span class="burger-menu__tab-label"><?= esc(lang('SiteCopy.schengen_visas_refusal')) ?></span>
                                 <img src="/img/mega-menu/arrow.svg" alt="">
                             </button>
                             <button class="burger-menu__tab" type="button" data-menu-tab="ees">
-                                <?= esc(lang('SiteCopy.ees_entry_exit_system')) ?>
+                                <span class="burger-menu__tab-label"><?= esc(lang('SiteCopy.ees_entry_exit_system')) ?></span>
                                 <img src="/img/mega-menu/arrow.svg" alt="">
                             </button>
                             <button class="burger-menu__tab" type="button" data-menu-tab="etias">
-                                ETIAS
+                                <span class="burger-menu__tab-label">ETIAS</span>
                                 <img src="/img/mega-menu/arrow.svg" alt="">
                             </button>
                         </div>
