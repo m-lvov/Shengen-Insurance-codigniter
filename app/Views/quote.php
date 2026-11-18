@@ -502,6 +502,9 @@ echo view ('includes/header', [
                             <p class="payment-modal__text" id="payment-success-text">
                                 <?= esc(lang('SiteCopy.the_test_payment_scenario_was_completed_succes')) ?>
                             </p>
+                            <a class="payment-modal__download" hidden>
+                                <?= esc(lang('DemoPolicy.download')) ?>
+                            </a>
                         </div>
                         <div class="payment-modal__footer">
                             <a class="payment-modal__logo" href="/" aria-label="<?= esc(lang('SiteCopy.go_schengen_home'), 'attr') ?>">

@@ -6,6 +6,11 @@ use App\Libraries\TouristValidator;
 use App\Libraries\QuotePreparer;
 use App\Libraries\ApplicationWriter;
 use App\Libraries\ApplicationRequestKey;
+use App\Libraries\DemoPolicyPdf;
+use App\Models\ApplicationTouristModel;
+use App\Models\InsuranceApplicationModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
+use CodeIgniter\HTTP\ResponseInterface;
 
 class SiteController extends BaseController
 {
@@ -238,6 +243,11 @@ class SiteController extends BaseController
                 ]);
         }
 
+        $session = session();
+        $checkoutApplications = $session->get('checkoutApplications') ?? [];
+        $checkoutApplications[$reference] = true;
+        $session->set('checkoutApplications', $checkoutApplications);
+
         return $this->response
             ->setStatusCode(201)
             ->setJSON([
@@ -247,5 +257,73 @@ class SiteController extends BaseController
                 'priceBeforeDiscount' => $application['price_before_discount'],
                 'discountPercent' => $application['discount_percent'],
             ]);
+    }
+
+    public function completeDemoPayment(): ResponseInterface
+    {
+        $this->response->setHeader('X-CSRF-Hash', csrf_hash());
+        $reference = $this->request->getPost('reference');
+        $applications = model(InsuranceApplicationModel::class);
+        $application = $this->checkoutApplication($applications, $reference);
+
+        if ($application === null) {
+            return $this->response->setStatusCode(404)->setJSON([
+                'error' => lang('DemoPolicy.applicationUnavailable'),
+            ]);
+        }
+
+        if ($application['status'] === 'draft') {
+            $updated = $applications->where('status', 'draft')->update(
+                $application['id'],
+                ['status' => InsuranceApplicationModel::DEMO_COMPLETED]
+            );
+            if (!$updated) {
+                return $this->response->setStatusCode(500)->setJSON([
+                    'error' => lang('DemoPolicy.confirmationFailed'),
+                ]);
+            }
+        } elseif ($application['status'] !== InsuranceApplicationModel::DEMO_COMPLETED) {
+            return $this->response->setStatusCode(409)->setJSON([
+                'error' => lang('DemoPolicy.applicationUnavailable'),
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'downloadUrl' => url_to('demo-policy', $application['reference']),
+        ]);
+    }
+
+    public function downloadDemoPolicy(string $reference): ResponseInterface
+    {
+        $application = $this->checkoutApplication(model(InsuranceApplicationModel::class), $reference);
+        if ($application === null || $application['status'] !== InsuranceApplicationModel::DEMO_COMPLETED) {
+            throw PageNotFoundException::forPageNotFound();
+        }
+
+        $tourists = model(ApplicationTouristModel::class)
+            ->select('first_name, last_name')
+            ->where('application_id', $application['id'])
+            ->orderBy('position')
+            ->findAll();
+
+        $pdf = (new DemoPolicyPdf())->render($application, $tourists, $this->request->getLocale());
+
+        return $this->response
+            ->download('demo-policy-' . $reference . '.pdf', $pdf, true)
+            ->setHeader('Cache-Control', 'private, no-store');
+    }
+
+    private function checkoutApplication(InsuranceApplicationModel $applications, mixed $reference): ?array
+    {
+        if (!is_string($reference) || !preg_match('/\A[a-f0-9]{32}\z/', $reference)) {
+            return null;
+        }
+
+        $checkoutApplications = session()->get('checkoutApplications') ?? [];
+        if (!isset($checkoutApplications[$reference])) {
+            return null;
+        }
+
+        return $applications->where('reference', $reference)->first();
     }
 }

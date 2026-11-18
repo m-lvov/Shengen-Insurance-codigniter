@@ -6,6 +6,8 @@ use CodeIgniter\Model;
 
 class InsuranceApplicationModel extends Model
 {
+    public const DEMO_COMPLETED = 'demo_completed';
+
     protected $table            = 'insurance_applications';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;

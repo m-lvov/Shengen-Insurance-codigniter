@@ -15,3 +15,5 @@ $routes->post('contact', 'SiteController::sendContact');
 $routes->post('quote/calculate', 'SiteController::calculate');
 $routes->post('quote/validate-tourists', 'SiteController::validateTourists');
 $routes->post('quote/applications', 'SiteController::saveApplication');
+$routes->post('quote/demo-payment', 'SiteController::completeDemoPayment');
+$routes->get('quote/applications/(:segment)/demo-policy', 'SiteController::downloadDemoPolicy/$1', ['as' => 'demo-policy']);

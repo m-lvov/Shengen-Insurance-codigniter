@@ -13527,6 +13527,34 @@ body:has(> .insurance-popup:not([hidden])) {
     line-height: 1.5;
 }
 
+.payment-modal__download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    max-width: 100%;
+    padding: 12px 24px;
+    border-radius: 10px;
+    background: #7eec10;
+    color: #02063c;
+    font-weight: 700;
+    text-align: center;
+    transition: background-color 180ms ease;
+}
+
+.payment-modal__download:hover {
+    background: #a3f052;
+}
+
+.payment-modal__download:focus-visible {
+    outline: 3px solid #4f42f0;
+    outline-offset: 3px;
+}
+
+.payment-modal__download[hidden] {
+    display: none;
+}
+
 .payment-form__submit:disabled {
     opacity: 0.65;
     cursor: wait;

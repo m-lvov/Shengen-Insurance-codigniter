@@ -4127,6 +4127,9 @@ if (quotePage) {
     };
     let paymentForm = payment.querySelector('.payment-form');
     let paymentModals = document.querySelectorAll('.payment-modal');
+    let policyDownload = document.querySelector('.payment-modal__download');
+    let paymentError = document.querySelector('#payment-error-text');
+    let defaultPaymentError = paymentError.textContent;
     let paymentAttempt = 0;
     let paymentTimer;
     let stepText = document.querySelector('.quote-page__step-text');
@@ -4206,7 +4209,7 @@ if (quotePage) {
         payNowButton.firstChild.textContent = siteText("Run demo payment ");
     }
 
-    function showPaymentResult(state) {
+    function showPaymentResult(state, downloadUrl = '', errorMessage = '') {
         cancelDemoPayment();
         payment.hidden = true;
         quoteNavigation.hidden = true;
@@ -4225,6 +4228,10 @@ if (quotePage) {
         if (state === 'success') {
             activeModal.querySelector('.payment-modal__text').textContent =
                 siteText("Application reference: ") + payment.querySelector('.payment-receipt__value--order').textContent;
+            policyDownload.href = downloadUrl;
+            policyDownload.hidden = false;
+        } else if (state === 'error') {
+            paymentError.textContent = errorMessage || defaultPaymentError;
         }
         activeModal.focus();
         cardNumberInput.value = '';
@@ -4235,6 +4242,30 @@ if (quotePage) {
         cardCvvPreview.replaceChildren(createCardDigits('', 3, 'cvv'));
         paymentCard.classList.remove('payment-card--flipped');
         window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    async function finishDemoPayment(result, attempt) {
+        if (attempt !== paymentAttempt || checkoutStep !== 4) return;
+        if (result !== 'success') {
+            showPaymentResult(result);
+            return;
+        }
+
+        let reference = payment.querySelector('.payment-receipt__value--order').textContent;
+        let parameters = new URLSearchParams({ reference });
+        try {
+            let response = await requestQuoteCalculation(parameters, '/quote/demo-payment');
+            if (typeof response.downloadUrl !== 'string' || !response.downloadUrl) {
+                throw new Error(siteText("The server returned an invalid response. Please try again"));
+            }
+            if (attempt === paymentAttempt && checkoutStep === 4) {
+                showPaymentResult('success', response.downloadUrl);
+            }
+        } catch (error) {
+            if (attempt === paymentAttempt && checkoutStep === 4) {
+                showPaymentResult('error', '', error.message);
+            }
+        }
     }
 
     function submitDemoPayment(event) {
@@ -4251,9 +4282,7 @@ if (quotePage) {
         payNowButton.firstChild.textContent = siteText("Processing… ");
         paymentForm.setAttribute('aria-busy', 'true');
         paymentForm.inert = true;
-        paymentTimer = setTimeout(() => {
-            if (attempt === paymentAttempt && checkoutStep === 4) showPaymentResult(result);
-        }, 650);
+        paymentTimer = setTimeout(finishDemoPayment, 650, result, attempt);
     }
     payNowButton.addEventListener('click', submitDemoPayment);
     paymentForm.addEventListener('submit', submitDemoPayment);
